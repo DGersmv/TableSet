@@ -1,0 +1,35 @@
+﻿/* *****************************************************************************
+// Localizable resource description
+// ****************************************************************************/
+
+'STR#' 32000 "Add-on Name and Description" {
+/* [  1] */		"Landscape Helper AC27"
+/* [  2] */		"Landscape AC27 V1.4"
+}
+
+'STR#' 32501 "Strings for the Menu" {
+/* [   ] */		"Landscape"
+/* [   ] */		"Smart-panel"
+/* [  1] */			"Landscape Helper^INT"
+
+}
+
+/* --- Dockable browser palette ----------------------------------------------*/
+
+'GDLG'  32500    Palette | topCaption | close | grow   0   0  450  150  "Lanscape Helper"  {
+/* [  1] */ Browser			0   0  450  150
+}
+
+'DLGH'  32500  DLG_32500_Browser_Repl {
+1	"Browser Control"		Browser_0
+}
+
+/* --- Dockable browser palette: HELP ---------------------------------------*/
+
+'GDLG'  32510    Palette | topCaption | close | grow   0   0  900  700  "Help LandscapeHelper"  {
+/* [  1] */ Browser         0   0  900  700
+}
+
+'DLGH'  32510  DLG_32510_Help_Browser {
+1   "Help Browser Control"     Browser_0
+}

@@ -1,0 +1,14 @@
+﻿/* *****************************************************************************
+// Non-localizable resource description
+// ****************************************************************************/
+
+#include "MDIDs_APICD.h"
+
+'MDID' 32500 "Add-On Identifier" {
+	909404777
+	601968829_LandscapeHelperInt
+}
+
+'DATA' 100 "Browser Control Html" {
+	"Selection_Test.html"
+}
