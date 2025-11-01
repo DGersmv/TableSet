@@ -517,15 +517,39 @@ bool ColumnOrientHelper::RotateSelected(double angleDeg)
             bool changed = false;
             
             switch (element.header.type.typeID) {
-            case API_BeamID:
-                element.beam.profileAngle += angleRad;
-                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, profileAngle);
+            case API_BeamID: {
+                // Балка: поворот вокруг середины (между begC и endC) в плоскости XY
+                const double dx = element.beam.endC.x - element.beam.begC.x;
+                const double dy = element.beam.endC.y - element.beam.begC.y;
+                const double beamLength = std::hypot(dx, dy);
+                
+                // Вычисляем середину балки
+                const API_Coord center = {
+                    (element.beam.begC.x + element.beam.endC.x) * 0.5,
+                    (element.beam.begC.y + element.beam.endC.y) * 0.5
+                };
+                
+                // Текущий угол балки
+                const double currentAngle = std::atan2(dy, dx);
+                // Новый угол после поворота
+                const double newAngle = currentAngle + angleRad;
+                
+                // Размещаем балку так, чтобы её середина осталась в том же месте
+                const double halfLen = beamLength * 0.5;
+                element.beam.begC.x = center.x - halfLen * std::cos(newAngle);
+                element.beam.begC.y = center.y - halfLen * std::sin(newAngle);
+                element.beam.endC.x = center.x + halfLen * std::cos(newAngle);
+                element.beam.endC.y = center.y + halfLen * std::sin(newAngle);
+                
+                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, begC);
+                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, endC);
                 needsMemo = true;
                 hasMemo = (ACAPI_Element_GetMemo(n.guid, &memo, APIMemoMask_All) == NoError);
                 changed = true;
-                Log("[RotateOrient] Beam %s: added %.3fdeg to profileAngle",
-                    APIGuidToString(n.guid).ToCStr().Get(), angleDeg);
+                Log("[RotateOrient] Beam %s: rotated %.3fdeg around center (%.3f, %.3f)",
+                    APIGuidToString(n.guid).ToCStr().Get(), angleDeg, center.x, center.y);
                 break;
+            }
                 
             default:
                 continue;

@@ -307,6 +307,14 @@ bool CreateLayerAndMoveElements(const LayerCreationParams& params)
             ACAPI_WriteReport("[LayerHelper] ID элементов не изменяются (baseID пустой)", false);
         }
 
+        // 4. Скрываем слой, если требуется
+        if (params.hideLayer) {
+            if (!SetLayerVisibility(layerIndex, true)) {
+                ACAPI_WriteReport("[LayerHelper] Ошибка скрытия слоя", true);
+                return APIERR_GENERAL;
+            }
+        }
+
         ACAPI_WriteReport("[LayerHelper] Операция завершена успешно", false);
         return NoError;
     });
@@ -388,7 +396,39 @@ bool MoveLayerToFolder(API_AttributeIndex layerIndex, const GS::UniString& folde
     return true;
 }
 
-
-
+// ---------------- Скрыть/показать слой ---------------- 
+bool SetLayerVisibility(API_AttributeIndex layerIndex, bool hidden)
+{
+    ACAPI_WriteReport("[LayerHelper] SetLayerVisibility: layer=%s, hidden=%s", false, 
+        layerIndex.ToUniString().ToCStr().Get(), hidden ? "true" : "false");
+    
+    // Получаем текущий слой
+    API_Attribute layer = {};
+    layer.header.typeID = API_LayerID;
+    layer.header.index = layerIndex;
+    
+    GSErrCode err = ACAPI_Attribute_Get(&layer);
+    if (err != NoError) {
+        ACAPI_WriteReport("[LayerHelper] Ошибка получения слоя (код: %d)", true, err);
+        return false;
+    }
+    
+    // Устанавливаем/снимаем флаг скрытия
+    if (hidden) {
+        layer.header.flags |= APILay_Hidden;  // Добавляем флаг скрытия
+    } else {
+        layer.header.flags &= ~APILay_Hidden; // Снимаем флаг скрытия
+    }
+    
+    // Сохраняем изменения через ACAPI_Attribute_Modify
+    err = ACAPI_Attribute_Modify(&layer, nullptr);
+    if (err != NoError) {
+        ACAPI_WriteReport("[LayerHelper] Ошибка установки видимости слоя (код: %d)", true, err);
+        return false;
+    }
+    
+    ACAPI_WriteReport("[LayerHelper] Видимость слоя установлена: hidden=%s", false, hidden ? "true" : "false");
+    return true;
+}
 
 } // namespace LayerHelper

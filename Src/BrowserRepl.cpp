@@ -12,10 +12,10 @@
 #include "GDLHelper.hpp"
 #include "MarkupHelper.hpp"
 #include "RoadHelper.hpp"
+#include "ShellHelper.hpp"
 #include "HelpPalette.hpp"
 #include "LayerHelper.hpp"
 #include "ColumnOrientHelper.hpp"
-#include "MeshHelper.hpp"
 
 
 
@@ -272,13 +272,20 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 			params.folderPath = parts[0];
 			params.layerName = parts[1];
 			params.baseID = GS::UniString(""); // ID не меняем
+			params.hideLayer = false; // По умолчанию не скрываем
+			
+			// Если есть третий параметр, это флаг скрытия
+			if (parts.GetSize() >= 3) {
+				params.hideLayer = (parts[2] == "1" || parts[2] == "true" || parts[2] == "True");
+			}
 		}
 		
 		if (BrowserRepl::HasInstance()) {
-			BrowserRepl::GetInstance().LogToBrowser(GS::UniString::Printf("[C++] Создание слоя: папка='%s', слой='%s', ID='%s'", 
+			BrowserRepl::GetInstance().LogToBrowser(GS::UniString::Printf("[C++] Создание слоя: папка='%s', слой='%s', ID='%s', hide=%s", 
 				params.folderPath.ToCStr().Get(), 
 				params.layerName.ToCStr().Get(), 
-				params.baseID.ToCStr().Get()));
+				params.baseID.ToCStr().Get(),
+				params.hideLayer ? "true" : "false"));
 		}
 		
 		const bool success = LayerHelper::CreateLayerAndMoveElements(params);
@@ -541,24 +548,188 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 
 	// --- Road API (выбор осевой линии) ---
 	jsACAPI->AddItem(new JS::Function("SetBaseLineForShell", [](GS::Ref<JS::Base>) {
-		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] SetBaseLineForShell() [Road]");
+		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] SetBaseLineForShell() [Shell]");
 		
-		const bool success = RoadHelper::SetCenterLine();
+		// Используем ShellHelper для установки базовой линии (работает для контуров)
+		const bool success = ShellHelper::SetBaseLineForShell();
+		
+		// Также синхронизируем с RoadHelper для совместимости
+		if (success) {
+			RoadHelper::SetCenterLine(); // Это также обновит RoadHelper, если нужно
+		}
+		
 		return new JS::Value(success);
 		}));
 
 	jsACAPI->AddItem(new JS::Function("SetMeshSurfaceForShell", [](GS::Ref<JS::Base>) {
-		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] SetMeshSurfaceForShell() [Road]");
+		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] SetMeshSurfaceForShell() [Shell]");
 		
-		const bool success = RoadHelper::SetTerrainMesh();
+		// Вызываем ShellHelper::SetMeshSurfaceForShell(), который установит mesh в ShellHelper и GroundHelper
+		const bool success = ShellHelper::SetMeshSurfaceForShell();
+		
+		// Также синхронизируем с RoadHelper для совместимости
+		if (success) {
+			RoadHelper::SetTerrainMesh(); // Это также обновит RoadHelper, если нужно
+		}
+		
 		return new JS::Value(success);
 		}));
 
-	// --- Mesh API (создание Mesh) ---
+	// --- Mesh API (создание Morph) ---
+	// ВНИМАНИЕ: Функция создаёт Morph элемент из точек, указанных пользователем (НЕ создаёт mesh!)
 	jsACAPI->AddItem(new JS::Function("CreateMesh", [](GS::Ref<JS::Base>) {
-		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] CreateMesh()");
-		return new JS::Value(MeshHelper::CreateMesh());
+		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] CreateMesh() - создание Morph из точек пользователя");
+		
+		// Запрашиваем точки у пользователя и создаём Morph
+		bool success = false;
+		GSErrCode err = ACAPI_CallUndoableCommand("Create Morph from Points", [&]() -> GSErrCode {
+			GS::Array<API_Coord3D> points;
+			Int32 pointNum = 1;
+			
+			if (BrowserRepl::HasInstance()) {
+				BrowserRepl::GetInstance().LogToBrowser("[JS] Запрашиваем точки у пользователя");
+			}
+			
+			// Минимум 3 точки нужно получить обязательно
+			while (pointNum <= 3) {
+				API_GetPointType gp = {};
+				char promptBuf[256];
+				std::sprintf(promptBuf, "Morph: укажите точку %d/3", pointNum);
+				CHTruncate(promptBuf, gp.prompt, sizeof(gp.prompt));
+				gp.changeFilter = false;
+				gp.changePlane = false;
+				
+				GSErrCode inputErr = ACAPI_UserInput_GetPoint(&gp);
+				
+				if (inputErr != NoError) {
+					if (BrowserRepl::HasInstance()) {
+						BrowserRepl::GetInstance().LogToBrowser("[JS] Отменено или ошибка при вводе точки");
+					}
+					return inputErr;
+				}
+				
+				// Фиксируем Z = 3000 мм (3.0 метра)
+				points.Push(API_Coord3D{gp.pos.x, gp.pos.y, 3.0});
+				pointNum++;
+			}
+			
+			if (points.GetSize() < 3) {
+				return APIERR_BADPOLY;
+			}
+			
+			// Создаём morph из полученных точек через RoadHelper
+			success = RoadHelper::CreateMorphFromPoints(points);
+			if (!success) {
+				return APIERR_BADPOLY;
+			}
+			
+			return NoError;
+		});
+		
+		return new JS::Value(err == NoError && success);
 		}));
+
+	// --- Create Morph from Contour ---
+	jsACAPI->AddItem(new JS::Function("CreateMorphFromContour", [](GS::Ref<JS::Base> param) {
+		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] CreateMorphFromContour() - создание контуров и Morph");
+		
+		// Парсим параметры: принимаем строку "width:..,step:..,thickness:.." или просто число
+		double width = 1000.0; // мм по умолчанию
+		double step = 500.0;   // мм по умолчанию
+		double thickness = 0.0; // мм по умолчанию (0 = плоский)
+		
+		if (param != nullptr) {
+			if (GS::Ref<JS::Value> v = GS::DynamicCast<JS::Value>(param)) {
+				switch (v->GetType()) {
+				case JS::Value::DOUBLE:
+				case JS::Value::INTEGER: 
+					width = v->GetDouble(); 
+					break;
+				case JS::Value::STRING: {
+					GS::UniString s = v->GetString();
+					for (UIndex i = 0; i < s.GetLength(); ++i) if (s[i] == ',') s[i] = '.';
+					const char* c = s.ToCStr().Get();
+					if (std::strncmp(c, "width:", 6) == 0) { 
+						std::sscanf(c + 6, "%lf", &width); 
+					}
+					const char* stepPtr = std::strstr(c, "step:");
+					if (stepPtr != nullptr) {
+						std::sscanf(stepPtr + 5, "%lf", &step);
+					}
+					const char* thicknessPtr = std::strstr(c, "thickness:");
+					if (thicknessPtr != nullptr) {
+						std::sscanf(thicknessPtr + 10, "%lf", &thickness);
+					}
+					break;
+				}
+				default: break;
+				}
+			}
+		}
+		
+		if (BrowserRepl::HasInstance()) {
+			BrowserRepl::GetInstance().LogToBrowser(GS::UniString::Printf("[JS] CreateMorphFromContour parsed: width=%.1fmm, step=%.1fmm, thickness=%.1fmm", width, step, thickness));
+		}
+		
+		// Парсим материалы (по умолчанию 1, 2, 3)
+		API_AttributeIndex materialTop = ACAPI_CreateAttributeIndex(1);
+		API_AttributeIndex materialBottom = ACAPI_CreateAttributeIndex(2);
+		API_AttributeIndex materialSide = ACAPI_CreateAttributeIndex(3);
+		
+		if (param != nullptr) {
+			if (GS::Ref<JS::Value> v = GS::DynamicCast<JS::Value>(param)) {
+				if (v->GetType() == JS::Value::STRING) {
+					GS::UniString s = v->GetString();
+					const char* c = s.ToCStr().Get();
+					
+					// Ищем materialTop:, materialBottom:, materialSide:
+					const char* matTopPtr = std::strstr(c, "materialTop:");
+					if (matTopPtr != nullptr) {
+						int matIdx = 1;
+						std::sscanf(matTopPtr + 12, "%d", &matIdx);
+						materialTop = ACAPI_CreateAttributeIndex(matIdx);
+					}
+					const char* matBottomPtr = std::strstr(c, "materialBottom:");
+					if (matBottomPtr != nullptr) {
+						int matIdx = 2;
+						std::sscanf(matBottomPtr + 14, "%d", &matIdx);
+						materialBottom = ACAPI_CreateAttributeIndex(matIdx);
+					}
+					const char* matSidePtr = std::strstr(c, "materialSide:");
+					if (matSidePtr != nullptr) {
+						int matIdx = 3;
+						std::sscanf(matSidePtr + 13, "%d", &matIdx);
+						materialSide = ACAPI_CreateAttributeIndex(matIdx);
+					}
+				}
+			}
+		}
+		
+		bool success = ShellHelper::CreateMorphFromContour(width, step, thickness, materialTop, materialBottom, materialSide);
+		return new JS::Value(success);
+	}));
+	
+	// --- Get Surface Finishes List (покрытия) ---
+	jsACAPI->AddItem(new JS::Function("GetSurfaceFinishesList", [](GS::Ref<JS::Base> param) {
+		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] GetSurfaceFinishesList()");
+		
+		GS::Array<RoadHelper::SurfaceFinishInfo> finishes = RoadHelper::GetSurfaceFinishesList();
+		
+		JS::Object* result = new JS::Object();
+		JS::Array* finishArray = new JS::Array();
+		
+		for (UIndex i = 0; i < finishes.GetSize(); ++i) {
+			JS::Object* finishObj = new JS::Object();
+			finishObj->AddItem("index", new JS::Value((double)finishes[i].index));
+			finishObj->AddItem("name", new JS::Value(finishes[i].name));
+			finishArray->AddItem(finishObj);
+		}
+		
+		result->AddItem("finishes", finishArray);
+		result->AddItem("count", new JS::Value((double)finishes.GetSize()));
+		
+		return result;
+	}));
 
 	// --- Road API (создание дорожки по линии) ---
 	jsACAPI->AddItem(new JS::Function("CreateShellFromLine", [](GS::Ref<JS::Base> param) {
