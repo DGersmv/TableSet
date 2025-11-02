@@ -47,9 +47,20 @@ bool RotateSelected (double angleDeg)
                 ACAPI_ELEMENT_MASK_SET(mask, API_LampType, angle);
                 break;
             case API_BeamID: {
-                // Поворот балки вокруг её собственной оси (profileAngle)
-                element.beam.profileAngle += addRad;
-                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, profileAngle);
+                // Поворот балки в плоскости XY - меняем направление begC -> endC (поворот вокруг оси Z)
+                const double dx = element.beam.endC.x - element.beam.begC.x;
+                const double dy = element.beam.endC.y - element.beam.begC.y;
+                const double beamLength = std::hypot(dx, dy);
+                const double currentAngle = std::atan2(dy, dx);
+                const double newAngle = currentAngle + addRad;
+                
+                element.beam.endC.x = element.beam.begC.x + beamLength * std::cos(newAngle);
+                element.beam.endC.y = element.beam.begC.y + beamLength * std::sin(newAngle);
+                
+                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, begC);
+                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, endC);
+                needsMemo = true;
+                hasMemo = (ACAPI_Element_GetMemo(n.guid, &memo, APIMemoMask_All) == NoError);
                 break;
             }
             default:
@@ -178,9 +189,18 @@ bool RandomizeSelectedAngles ()
                 ACAPI_ELEMENT_MASK_SET(mask, API_ColumnType, axisRotationAngle); 
                 break;
             case API_BeamID: {
-                // Случайный поворот балки вокруг её собственной оси (profileAngle)
-                element.beam.profileAngle = rnd;
-                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, profileAngle);
+                // Случайный поворот балки в плоскости XY (поворот вокруг оси Z)
+                const double dx = element.beam.endC.x - element.beam.begC.x;
+                const double dy = element.beam.endC.y - element.beam.begC.y;
+                const double beamLength = std::hypot(dx, dy);
+                
+                element.beam.endC.x = element.beam.begC.x + beamLength * std::cos(rnd);
+                element.beam.endC.y = element.beam.begC.y + beamLength * std::sin(rnd);
+                
+                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, begC);
+                ACAPI_ELEMENT_MASK_SET(mask, API_BeamType, endC);
+                needsMemo = true;
+                hasMemo = (ACAPI_Element_GetMemo(n.guid, &memo, APIMemoMask_All) == NoError);
                 break;
             }
             default: 

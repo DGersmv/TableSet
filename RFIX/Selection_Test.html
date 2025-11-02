@@ -129,14 +129,26 @@
     "use strict";
 
     // ================= helpers =================
+    let logBuffer = ''; // Буфер для логов (скорость!)
+    
     function AddLog(msg) {
       // Log to console
       try { console.log(String(msg)); } catch(_) {}
+      
       // Also log to UI
       const box = document.getElementById('log-box');
       if (!box) return;
+      
       const now = new Date().toLocaleTimeString();
-      box.textContent += "\n[" + now + "] " + msg;
+      logBuffer += "\n[" + now + "] " + msg;
+      
+      // Ограничиваем буфер (макс 5000 символов)
+      if (logBuffer.length > 5000) {
+        logBuffer = logBuffer.substring(logBuffer.length - 4000);
+      }
+      
+      // Применяем одним обновлением
+      box.textContent = logBuffer;
       box.scrollTop = box.scrollHeight;
     }
     
@@ -202,49 +214,43 @@
     function UpdateSelectedElements() {
       const A = window.ACAPI;
       if (!A || typeof A.GetSelectedElements !== 'function') {
-        AddLog('[UI] ACAPI.GetSelectedElements unavailable');
+        // AddLog('[UI] ACAPI.GetSelectedElements unavailable');
         return;
       }
       A.GetSelectedElements().then(function (elemInfos) {
         const selectionTable = document.getElementById('selection');
-        while (selectionTable.firstChild) selectionTable.removeChild(selectionTable.firstChild);
-
-        AddLog('[UI] GetSelectedElements returned: ' + JSON.stringify(elemInfos));
-        AddLog('[UI] Data type: ' + typeof elemInfos + ', length: ' + (elemInfos ? elemInfos.length : 'undefined'));
+        
+        // Оптимизация: используем innerHTML вместо множества appendChild
+        let html = '';
 
         if (!elemInfos || elemInfos.length === 0) {
-          const tr = document.createElement('tr');
-          tr.innerHTML = '<td colspan="4">No selected elements</td>';
-          selectionTable.appendChild(tr);
-          AddLog('[UI] Selection is empty');
-          return;
+          html = '<tr><td colspan="4">No selected elements</td></tr>';
+        } else {
+          const grouped = {};
+          for (let i = 0; i < elemInfos.length; i++) {
+            const typeName  = elemInfos[i][1];
+            const elemID    = elemInfos[i][2];
+            const layerName = elemInfos[i][3] || 'Unknown';
+            
+            const key = typeName + "||" + elemID + "||" + layerName;
+            if (!grouped[key]) grouped[key] = { type: typeName, id: elemID, layer: layerName, count: 0 };
+            grouped[key].count++;
+          }
+          
+          // Оптимизация: формируем весь HTML за раз
+          for (const key of Object.keys(grouped)) {
+            html += '<tr>' +
+              '<td>' + grouped[key].type  + '</td>' +
+              '<td>' + grouped[key].id    + '</td>' +
+              '<td>' + grouped[key].layer + '</td>' +
+              '<td>' + grouped[key].count + '</td>' +
+              '</tr>';
+          }
         }
-
-        const grouped = {};
-        for (let i = 0; i < elemInfos.length; i++) {
-          AddLog('[UI] Element ' + i + ': ' + JSON.stringify(elemInfos[i]));
-          
-          const typeName  = elemInfos[i][1];
-          const elemID    = elemInfos[i][2];
-          const layerName = elemInfos[i][3] || 'Unknown';
-          
-          AddLog('[UI] Parsing: typeName=' + typeName + ', elemID=' + elemID + ', layerName=' + layerName);
-          
-          const key = typeName + "||" + elemID + "||" + layerName;
-          if (!grouped[key]) grouped[key] = { type: typeName, id: elemID, layer: layerName, count: 0 };
-          grouped[key].count++;
-        }
-        Object.keys(grouped).forEach(key => {
-          const tr = document.createElement('tr');
-          tr.innerHTML =
-            '<td>' + grouped[key].type  + '</td>' +
-            '<td>' + grouped[key].id    + '</td>' +
-            '<td>' + grouped[key].layer + '</td>' +
-            '<td>' + grouped[key].count + '</td>';
-          selectionTable.appendChild(tr);
-        });
-        AddLog('[UI] Selected groups: ' + Object.keys(grouped).length + ', elements: ' + elemInfos.length);
-      }).catch(err => AddLog('[UI] GetSelectedElements error: ' + err));
+        
+        // Одна операция DOM вместо множества
+        selectionTable.innerHTML = html;
+      }).catch(err => console.log('[UI] GetSelectedElements error: ' + err));
     }
 
     // =============== ID renaming (bulk, without layers) ===============

@@ -46,7 +46,9 @@ namespace RoadHelper {
             BrowserRepl::GetInstance().LogToBrowser(s);
         }
 
+#ifdef DEBUG_UI_LOGS
         ACAPI_WriteReport("%s", false, s.ToCStr().Get());
+#endif
     }
 
     // ----------------------------------------------------------------------------

@@ -191,10 +191,16 @@ void BrowserRepl::InitBrowserControl()
 	RegisterACAPIJavaScriptObject();
 	// Страница сама дернёт UpdateSelectedElements() через whenACAPIReadyDo
 	LogToBrowser("[C++] BrowserRepl initialized");
+	
+#ifndef DEBUG_UI_LOGS
+	// В Release прячем чёрное поле логов
+	browser.ExecuteJS("var logBox = document.getElementById('log-box'); if (logBox) logBox.style.display = 'none';");
+#endif
 }
 
 void BrowserRepl::LogToBrowser(const GS::UniString& msg)
 {
+#ifdef DEBUG_UI_LOGS
 	// UniString → UTF-8
 	std::string utf8(msg.ToCStr(CC_UTF8));
 	GS::UniString jsSafe(utf8.c_str(), CC_UTF8);
@@ -206,6 +212,7 @@ void BrowserRepl::LogToBrowser(const GS::UniString& msg)
 	jsSafe.ReplaceAll("\n", "\\n");
 
 	browser.ExecuteJS("AddLog(\"" + jsSafe + "\");");
+#endif
 }
 
 // ------------------ JS API registration ---------------------
@@ -422,11 +429,7 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 		return new JS::Value(LandscapeHelper::DistributeSelected(step, count));
 		}));
 
-	// --- Column/Beam Orientation API ---
-	jsACAPI->AddItem(new JS::Function("SetColumns", [](GS::Ref<JS::Base>) {
-		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] SetColumns()");
-		return new JS::Value(ColumnOrientHelper::SetColumns());
-		}));
+	// --- Beam Orientation API ---
 	jsACAPI->AddItem(new JS::Function("SetBeams", [](GS::Ref<JS::Base>) {
 		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] SetBeams()");
 		return new JS::Value(ColumnOrientHelper::SetBeams());
@@ -434,10 +437,6 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 	jsACAPI->AddItem(new JS::Function("SetMeshForColumns", [](GS::Ref<JS::Base>) {
 		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] SetMeshForColumns()");
 		return new JS::Value(ColumnOrientHelper::SetMesh());
-		}));
-	jsACAPI->AddItem(new JS::Function("OrientColumnsToSurface", [](GS::Ref<JS::Base>) {
-		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] OrientColumnsToSurface()");
-		return new JS::Value(ColumnOrientHelper::OrientColumnsToSurface());
 		}));
 	jsACAPI->AddItem(new JS::Function("OrientBeamsToSurface", [](GS::Ref<JS::Base>) {
 		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] OrientBeamsToSurface()");

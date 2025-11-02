@@ -37,7 +37,9 @@ static inline void Log(const char* fmt, ...)
     GS::UniString s(buf);
     if (BrowserRepl::HasInstance())
         BrowserRepl::GetInstance().LogToBrowser(s);
+#ifdef DEBUG_UI_LOGS
     ACAPI_WriteReport("%s", false, s.ToCStr().Get());
+#endif
 }
 
 // =============== Выбор базовой линии ===============
@@ -1052,7 +1054,9 @@ bool Create3DShellFromPath(const PathData& path, double widthMM, double stepMM)
         
         // ВЫДЕЛЯЕМ ПАМЯТЬ ДЛЯ КООРДИНАТ! 🎯
         meshMemo.coords = reinterpret_cast<API_Coord**>(BMAllocateHandle((nCoords + 1) * (GSSize)sizeof(API_Coord), ALLOCATE_CLEAR, 0));
-        if (meshMemo.coords != nullptr) {
+        meshMemo.pends = reinterpret_cast<Int32**>(BMAllocateHandle((mesh.mesh.poly.nSubPolys + 1) * sizeof(Int32), ALLOCATE_CLEAR, 0));
+        meshMemo.parcs = reinterpret_cast<API_PolyArc**>(BMAllocateHandle(mesh.mesh.poly.nArcs * sizeof(API_PolyArc), ALLOCATE_CLEAR, 0));
+        if (meshMemo.coords != nullptr && meshMemo.pends != nullptr) {
             // Инициализируем элемент с индексом 0
             (*meshMemo.coords)[0] = meshContourPoints[0]; // Заглушка для элемента 0
             
@@ -1060,6 +1064,12 @@ bool Create3DShellFromPath(const PathData& path, double widthMM, double stepMM)
             for (UIndex i = 0; i < meshContourPoints.GetSize(); ++i) {
                 (*meshMemo.coords)[i + 1] = meshContourPoints[i];
             }
+            
+            // Замыкаем полигон (последняя точка = первая)
+            (*meshMemo.coords)[nCoords] = (*meshMemo.coords)[1];
+            
+            // Устанавливаем pends (end index для полигона)
+            (*meshMemo.pends)[1] = nCoords;
             
             // ВЫДЕЛЯЕМ ПАМЯТЬ ДЛЯ Z-КООРДИНАТ! 🎯
             meshMemo.meshPolyZ = reinterpret_cast<double**>(BMAllocateHandle((nCoords + 1) * (GSSize)sizeof(double), ALLOCATE_CLEAR, 0));
