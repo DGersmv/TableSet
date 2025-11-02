@@ -38,12 +38,16 @@ static GS::UniString LoadHtmlFromResource()
 		BMhKill(&data);
 		if (BrowserRepl::HasInstance())
 			BrowserRepl::GetInstance().LogToBrowser(GS::UniString::Printf("[UI] HTML resource loaded, size=%u bytes", (unsigned)handleSize));
+#ifdef DEBUG_UI_LOGS
 		ACAPI_WriteReport("[BrowserRepl] HTML resource loaded, size=%u bytes", false, (unsigned)handleSize);
+#endif
 	}
 	else {
 		if (BrowserRepl::HasInstance())
 			BrowserRepl::GetInstance().LogToBrowser("[UI] ERROR: HTML resource not found (DATA 100)");
+#ifdef DEBUG_UI_LOGS
 		ACAPI_WriteReport("[BrowserRepl] ERROR: HTML resource not found (DATA 100)", false);
+#endif
 	}
 	return resourceData;
 }
@@ -152,7 +156,9 @@ static double g_lastZDeltaMeters = 0.0;
 static GSErrCode __ACENV_CALL NotificationHandler(API_NotifyEventID notifID, Int32 /*param*/)
 {
 	if (notifID == APINotify_Quit) {
+#ifdef DEBUG_UI_LOGS
 		ACAPI_WriteReport("[BrowserRepl] APINotify_Quit to DestroyInstance", false);
+#endif
 		BrowserRepl::DestroyInstance();
 	}
 	return NoError;
@@ -163,12 +169,16 @@ BrowserRepl::BrowserRepl() :
 	DG::Palette(ACAPI_GetOwnResModule(), BrowserReplResId, ACAPI_GetOwnResModule(), paletteGuid),
 	browser(GetReference(), BrowserId)
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] ctor", false);
+#endif
 	ACAPI_ProjectOperation_CatchProjectEvent(APINotify_Quit, NotificationHandler);
 
 	// Подпишемся на изменение выделения (чтобы UI таблица актуализировалась)
 	const GSErr selErr = ACAPI_Notification_CatchSelectionChange(SelectionChangeHandler);
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] CatchSelectionChange then err=%d", false, (int)selErr);
+#endif
 
 	Attach(*this);
 	BeginEventProcessing();
@@ -177,7 +187,9 @@ BrowserRepl::BrowserRepl() :
 
 BrowserRepl::~BrowserRepl()
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] dtor", false);
+#endif
 	EndEventProcessing();
 }
 
@@ -188,7 +200,9 @@ void BrowserRepl::CreateInstance()
 	DBASSERT(!HasInstance());
 	instance = new BrowserRepl();
 	ACAPI_KeepInMemory(true);
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] CreateInstance", false);
+#endif
 }
 
 BrowserRepl& BrowserRepl::GetInstance()
@@ -201,21 +215,27 @@ void BrowserRepl::DestroyInstance() { instance = nullptr; }
 
 void BrowserRepl::Show()
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] Show", false);
+#endif
 	DG::Palette::Show();
 	SetMenuItemCheckedState(true);
 }
 
 void BrowserRepl::Hide()
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] Hide", false);
+#endif
 	DG::Palette::Hide();
 	SetMenuItemCheckedState(false);
 }
 
 void BrowserRepl::InitBrowserControl()
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] InitBrowserControl: loading HTML", false);
+#endif
 	browser.LoadHTML(LoadHtmlFromResource());
 	RegisterACAPIJavaScriptObject();
 	// Страница сама дернёт UpdateSelectedElements() через whenACAPIReadyDo
@@ -247,7 +267,9 @@ void BrowserRepl::LogToBrowser(const GS::UniString& msg)
 // ------------------ JS API registration ---------------------
 void BrowserRepl::RegisterACAPIJavaScriptObject()
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] RegisterACAPIJavaScriptObject", false);
+#endif
 
 	JS::Object* jsACAPI = new JS::Object("ACAPI");
 
@@ -512,7 +534,9 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 			if (v->GetType() == JS::Value::STRING) url = v->GetString();
 		}
 		if (url.IsEmpty()) url = "https://landscape.227.info/help/start";
+#ifdef DEBUG_UI_LOGS
 		ACAPI_WriteReport("[OpenHelp] url=%s", false, url.ToCStr().Get());
+#endif
 		if (BrowserRepl::HasInstance())
 			BrowserRepl::GetInstance().LogToBrowser("[C++] OpenHelp to " + url);
 		HelpPalette::ShowWithURL(url);
@@ -695,12 +719,16 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 			BrowserRepl::GetInstance().LogToBrowser(GS::UniString::Printf("[JS] CreateShellFromLine parsed: width=%.1fmm, step=%.1fmm", width, step));
 		}
 		
+#ifdef DEBUG_UI_LOGS
 		ACAPI_WriteReport("[BrowserRepl] Вызов RoadHelper::BuildRoad", false);
+#endif
 		RoadHelper::RoadParams params;
 		params.widthMM = width;
 		params.sampleStepMM = step;
 		const bool success = RoadHelper::BuildRoad(params);
+#ifdef DEBUG_UI_LOGS
 		ACAPI_WriteReport("[BrowserRepl] RoadHelper::BuildRoad вернул: %s", false, success ? "true" : "false");
+#endif
 		return new JS::Value(success);
 		}));
 
@@ -712,7 +740,9 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 // ------------------- Palette and Events ----------------------
 void BrowserRepl::UpdateSelectedElementsOnHTML()
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] UpdateSelectedElementsOnHTML()", false);
+#endif
 	browser.ExecuteJS("UpdateSelectedElements()");
 }
 
@@ -732,7 +762,9 @@ void BrowserRepl::SetMenuItemCheckedState(bool isChecked)
 
 void BrowserRepl::PanelResized(const DG::PanelResizeEvent& ev)
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] PanelResized dx=%d dy=%d", false, (int)ev.GetHorizontalChange(), (int)ev.GetVerticalChange());
+#endif
 	BeginMoveResizeItems();
 	browser.Resize(ev.GetHorizontalChange(), ev.GetVerticalChange());
 	EndMoveResizeItems();
@@ -740,14 +772,18 @@ void BrowserRepl::PanelResized(const DG::PanelResizeEvent& ev)
 
 void BrowserRepl::PanelCloseRequested(const DG::PanelCloseRequestEvent&, bool* accepted)
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] PanelCloseRequested will Hide", false);
+#endif
 	Hide();
 	*accepted = true;
 }
 
 GSErrCode __ACENV_CALL BrowserRepl::SelectionChangeHandler(const API_Neig*)
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] Selection changed then update UI", false);
+#endif
 	if (BrowserRepl::HasInstance())
 		BrowserRepl::GetInstance().UpdateSelectedElementsOnHTML();
 	return NoError;
@@ -755,46 +791,61 @@ GSErrCode __ACENV_CALL BrowserRepl::SelectionChangeHandler(const API_Neig*)
 
 GSErrCode __ACENV_CALL BrowserRepl::PaletteControlCallBack(Int32, API_PaletteMessageID messageID, GS::IntPtr param)
 {
+#ifdef DEBUG_UI_LOGS
 	switch (messageID) {
 	case APIPalMsg_OpenPalette:
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: OpenPalette", false);
-		if (!HasInstance()) CreateInstance();
-		GetInstance().Show();
 		break;
-
 	case APIPalMsg_ClosePalette:
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: ClosePalette", false);
-		if (!HasInstance()) break;
-		GetInstance().Hide();
 		break;
-
 	case APIPalMsg_HidePalette_Begin:
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: HidePalette_Begin", false);
-		if (HasInstance() && GetInstance().IsVisible()) GetInstance().Hide();
 		break;
-
 	case APIPalMsg_HidePalette_End:
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: HidePalette_End", false);
-		if (HasInstance() && !GetInstance().IsVisible()) GetInstance().Show();
 		break;
-
 	case APIPalMsg_DisableItems_Begin:
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: DisableItems_Begin", false);
-		if (HasInstance() && GetInstance().IsVisible()) GetInstance().DisableItems();
 		break;
-
 	case APIPalMsg_DisableItems_End:
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: DisableItems_End", false);
-		if (HasInstance() && GetInstance().IsVisible()) GetInstance().EnableItems();
 		break;
-
 	case APIPalMsg_IsPaletteVisible:
 		*(reinterpret_cast<bool*> (param)) = HasInstance() && GetInstance().IsVisible();
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: IsPaletteVisible this %d", false, (int)*(reinterpret_cast<bool*> (param)));
 		break;
-
 	default:
 		ACAPI_WriteReport("[BrowserRepl] PalMsg: %d", false, (int)messageID);
+		break;
+	}
+#endif
+
+	switch (messageID) {
+	case APIPalMsg_OpenPalette:
+		if (!HasInstance()) CreateInstance();
+		GetInstance().Show();
+		break;
+	case APIPalMsg_ClosePalette:
+		if (!HasInstance()) break;
+		GetInstance().Hide();
+		break;
+	case APIPalMsg_HidePalette_Begin:
+		if (HasInstance() && GetInstance().IsVisible()) GetInstance().Hide();
+		break;
+	case APIPalMsg_HidePalette_End:
+		if (HasInstance() && !GetInstance().IsVisible()) GetInstance().Show();
+		break;
+	case APIPalMsg_DisableItems_Begin:
+		if (HasInstance() && GetInstance().IsVisible()) GetInstance().DisableItems();
+		break;
+	case APIPalMsg_DisableItems_End:
+		if (HasInstance() && GetInstance().IsVisible()) GetInstance().EnableItems();
+		break;
+	case APIPalMsg_IsPaletteVisible:
+		*(reinterpret_cast<bool*> (param)) = HasInstance() && GetInstance().IsVisible();
+		break;
+	default:
 		break;
 	}
 	return NoError;
@@ -802,7 +853,9 @@ GSErrCode __ACENV_CALL BrowserRepl::PaletteControlCallBack(Int32, API_PaletteMes
 
 GSErrCode BrowserRepl::RegisterPaletteControlCallBack()
 {
+#ifdef DEBUG_UI_LOGS
 	ACAPI_WriteReport("[BrowserRepl] RegisterPaletteControlCallBack()", false);
+#endif
 	return ACAPI_RegisterModelessWindow(
 		GS::CalculateHashValue(paletteGuid),
 		PaletteControlCallBack,
