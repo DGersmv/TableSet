@@ -986,61 +986,6 @@
       }
     }
 
-    // ================= MESH CREATION =================
-    async function CreateMeshFrom3PointsUI() {
-      const A = window.ACAPI;
-      if (!A) { AddLog('[UI] ACAPI unavailable'); return; }
-
-      AddLog('[UI] Creating mesh from 3 points');
-      setInfo("info-mesh", "Click 3 points on the plan...");
-
-      if (typeof A.CreateMeshFrom3Points === 'function') {
-        try {
-          const success = await A.CreateMeshFrom3Points();
-          if (success) {
-            AddLog('[UI] ✅ Mesh created successfully');
-            setInfo("info-mesh", "✅ Mesh created successfully");
-          } else {
-            AddLog('[UI] ❌ Error creating mesh');
-            setInfo("info-mesh", "❌ Error creating mesh");
-          }
-        } catch (err) {
-          AddLog('[UI] ❌ Error calling CreateMeshFrom3Points: ' + err);
-          setInfo("info-mesh", "❌ Error: " + err);
-        }
-      } else {
-        AddLog('[UI] ❌ Function CreateMeshFrom3Points is unavailable');
-        setInfo("info-mesh", "❌ Function unavailable (update the plugin)");
-      }
-    }
-
-    async function CreateMeshFrom6PointsUI() {
-      const A = window.ACAPI;
-      if (!A) { AddLog('[UI] ACAPI unavailable'); return; }
-
-      AddLog('[UI] Creating mesh from 6 points');
-      setInfo("info-mesh", "Click 6 points on the plan...");
-
-      if (typeof A.CreateMeshFromPoints === 'function') {
-        try {
-          const success = await A.CreateMeshFromPoints(6);
-          if (success) {
-            AddLog('[UI] ✅ Mesh created successfully');
-            setInfo("info-mesh", "✅ Mesh created successfully");
-          } else {
-            AddLog('[UI] ❌ Error creating mesh');
-            setInfo("info-mesh", "❌ Error creating mesh");
-          }
-        } catch (err) {
-          AddLog('[UI] ❌ Error calling CreateMeshFromPoints: ' + err);
-          setInfo("info-mesh", "❌ Error: " + err);
-        }
-      } else {
-        AddLog('[UI] ❌ Function CreateMeshFromPoints is unavailable');
-        setInfo("info-mesh", "❌ Function unavailable (update the plugin)");
-      }
-    }
-
     // ================= MESH FROM LINE =================
     function SelectBaseLineMesh() {
       const A = window.ACAPI;
@@ -1536,31 +1481,6 @@
 
   <!-- Mesh -->
   <div id="tab-mesh" class="tabcontent">
-    <fieldset class="control-block">
-      <legend>Create Mesh from Points</legend>
-
-      <div style="text-align:center; margin-top:15px;">
-        <input type="button" 
-               onclick="whenACAPIReadyDo(CreateMeshFrom3PointsUI)" 
-               value="Create Mesh (3 pts)"
-               style="font-size:16px; padding:8px 20px; font-weight:bold; background:#4F604F; color:white; border:none; border-radius:4px; cursor:pointer;">
-        
-        <input type="button" 
-               onclick="whenACAPIReadyDo(CreateMeshFrom6PointsUI)" 
-               value="Create Mesh (6 pts)"
-               style="font-size:16px; padding:8px 20px; font-weight:bold; background:#4F604F; color:white; border:none; border-radius:4px; cursor:pointer; margin-left:10px;">
-      </div>
-
-      <div id="info-mesh" class="info-box">
-        Creates a Mesh element from points specified by the user on the plan.<br>
-        <strong>Workflow:</strong><br>
-        1. Click "Create Mesh (3 pts)" or "Create Mesh (6 pts)" button<br>
-        2. Select points on the plan with mouse (pencil cursor will appear)<br>
-        3. Mesh will be created from these points<br><br>
-        <strong>Note:</strong> This creates a simple Mesh element, not Morph. Z-coordinate is set to 0.0 (on plan level).
-      </div>
-    </fieldset>
-
     <fieldset class="control-block">
       <legend>Create Mesh from Line</legend>
 
