@@ -122,6 +122,28 @@ static GS::UniString GetStringFromJavaScriptVariable(GS::Ref<JS::Base> jsVariabl
 	return GS::EmptyUniString;
 }
 
+// --- Extract array of strings (GUIDs) from JS::Base ---
+static GS::Array<GS::UniString> GetStringArrayFromJavaScriptVariable(GS::Ref<JS::Base> jsVariable)
+{
+	GS::Array<GS::UniString> result;
+	GS::Ref<JS::Array> jsArray = GS::DynamicCast<JS::Array>(jsVariable);
+	if (jsArray == nullptr)
+		return result;
+	
+	// JS::Array имеет метод GetItemArray(), который возвращает const GS::Array<GS::Ref<Base>>&
+	const GS::Array<GS::Ref<JS::Base>>& items = jsArray->GetItemArray();
+	for (UIndex i = 0; i < items.GetSize(); ++i) {
+		GS::Ref<JS::Base> item = items[i];
+		if (item != nullptr) {
+			GS::Ref<JS::Value> jsValue = GS::DynamicCast<JS::Value>(item);
+			if (jsValue != nullptr && jsValue->GetType() == JS::Value::STRING) {
+				result.Push(jsValue->GetString());
+			}
+		}
+	}
+	return result;
+}
+
 template<class Type>
 static GS::Ref<JS::Base> ConvertToJavaScriptVariable(const Type& cppVariable)
 {
@@ -319,6 +341,29 @@ void BrowserRepl::RegisterACAPIJavaScriptObject()
 		if (BrowserRepl::HasInstance()) BrowserRepl::GetInstance().LogToBrowser("[JS] ChangeSelectedElementsID " + baseID);
 		const bool success = SelectionHelper::ChangeSelectedElementsID(baseID);
 		return ConvertToJavaScriptVariable(success);
+		}));
+
+	jsACAPI->AddItem(new JS::Function("ApplyCheckedSelection", [](GS::Ref<JS::Base> param) {
+		GS::Array<GS::UniString> guidStrings = GetStringArrayFromJavaScriptVariable(param);
+		if (BrowserRepl::HasInstance()) {
+			BrowserRepl::GetInstance().LogToBrowser(GS::UniString::Printf("[JS] ApplyCheckedSelection: %d GUIDs", (int)guidStrings.GetSize()));
+		}
+		
+		GS::Array<API_Guid> guids;
+		for (UIndex i = 0; i < guidStrings.GetSize(); ++i) {
+			API_Guid guid = APIGuidFromString(guidStrings[i].ToCStr().Get());
+			if (guid != APINULLGuid) {
+				guids.Push(guid);
+			}
+		}
+		
+		SelectionHelper::ApplyCheckedSelectionResult result = SelectionHelper::ApplyCheckedSelection(guids);
+		
+		// Возвращаем объект { applied: N, requested: M }
+		GS::Ref<JS::Object> jsResult = new JS::Object();
+		jsResult->AddItem("applied", ConvertToJavaScriptVariable((Int32)result.applied));
+		jsResult->AddItem("requested", ConvertToJavaScriptVariable((Int32)result.requested));
+		return jsResult;
 		}));
 
 	jsACAPI->AddItem(new JS::Function("CreateLayerAndMoveElements", [](GS::Ref<JS::Base> param) {

@@ -25,6 +25,15 @@ namespace SelectionHelper {
     // Изменить ID всех выделенных элементов
     bool ChangeSelectedElementsID (const GS::UniString& baseID);
 
+    // Результат применения выделения
+    struct ApplyCheckedSelectionResult {
+        UInt32 applied;    // Количество успешно применённых элементов
+        UInt32 requested;   // Количество запрошенных элементов
+    };
+
+    // Применить выделение по списку GUID
+    ApplyCheckedSelectionResult ApplyCheckedSelection (const GS::Array<API_Guid>& guids);
+
 } // namespace SelectionHelper
 
 #endif // SELECTIONHELPER_HPP

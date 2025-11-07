@@ -88,4 +88,50 @@ bool ChangeSelectedElementsID (const GS::UniString& baseID)
     return err == NoError;
 }
 
+// ---------------- Применить выделение по списку GUID ----------------
+ApplyCheckedSelectionResult ApplyCheckedSelection (const GS::Array<API_Guid>& guids)
+{
+    ApplyCheckedSelectionResult result;
+    result.requested = static_cast<UInt32>(guids.GetSize());
+    result.applied = 0;
+
+    if (guids.IsEmpty()) {
+        return result;
+    }
+
+    // Очищаем текущее выделение: получаем все выделенные элементы и удаляем их
+    API_SelectionInfo selectionInfo = {};
+    GS::Array<API_Neig> selNeigs;
+    ACAPI_Selection_Get(&selectionInfo, &selNeigs, false, false);
+    BMKillHandle((GSHandle*)&selectionInfo.marquee.coords);
+    
+    // Удаляем все текущие выделенные элементы
+    if (!selNeigs.IsEmpty()) {
+        ACAPI_Selection_Select(selNeigs, false);
+    }
+
+    // Преобразуем GUID в API_Neig и собираем в массив
+    GS::Array<API_Neig> neigs;
+    for (UIndex i = 0; i < guids.GetSize(); ++i) {
+        API_Neig neig(guids[i]);
+        
+        // Проверяем, существует ли элемент
+        API_Elem_Head elemHead = {};
+        elemHead.guid = guids[i];
+        if (ACAPI_Element_GetHeader(&elemHead) == NoError) {
+            neigs.Push(neig);
+        }
+    }
+
+    if (neigs.IsEmpty()) {
+        return result;
+    }
+
+    // Выделяем все элементы одним батчем
+    ACAPI_Selection_Select(neigs, true);
+    result.applied = static_cast<UInt32>(neigs.GetSize());
+
+    return result;
+}
+
 } // namespace SelectionHelper
