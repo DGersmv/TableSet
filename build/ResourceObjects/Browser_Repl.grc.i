@@ -4,8 +4,8 @@
 
 
 'STR#' 32000 "Add-on Name and Description" {
-		"Landscape Helper AC27"
-		"Landscape AC27 V2.0"
+		"Landscape Helper AC29"
+		"Landscape AC29 V2.0"
 }
 
 'STR#' 32501 "Strings for the Menu" {

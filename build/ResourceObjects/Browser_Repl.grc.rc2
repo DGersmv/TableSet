@@ -2,16 +2,16 @@
 
 /*---- This file was created by GRC compiler --------------------------------------------*/
 /*                                                                                       */
-/*     Source file: C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\Browser_Repl_Int\build\ResourceObjects\Browser_Repl.grc.i        Code table: NUL              */
+/*     Source file: C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\Browser_Repl_Int\build\ResourceObjects\Browser_Repl.grc.i        Code table: NUL              */
 /*                                                                                       */
-/*---- Version 2.0 - Windows ------------------------------ (c) 1996-2023 by Graphisoft -*/
+/*---- Version 2.0 - Windows ------------------------------ (c) 1996-2025 by Graphisoft -*/
 
 32000 STRS
 BEGIN
 	42, 0,
 	0x614C,0x646E,0x6373,0x7061,0x2065,0x6548,0x706C,0x7265,
-	0x4120,0x3243,0x0037,0x614C,0x646E,0x6373,0x7061,0x2065,
-	0x4341,0x3732,0x5620,0x2E32,0x0030,
+	0x4120,0x3243,0x0039,0x614C,0x646E,0x6373,0x7061,0x2065,
+	0x4341,0x3932,0x5620,0x2E32,0x0030,
 END
 
 32501 STRS
