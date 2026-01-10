@@ -1,8 +1,8 @@
-# Install script for directory: C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/Browser_Repl_Int
+# Install script for directory: C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Browser_Repl_Int")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/BrowserReplInt")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -35,7 +35,7 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/Browser_Repl_Int/build/install_local_manifest.txt"
+  file(WRITE "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
 if(CMAKE_INSTALL_COMPONENT)
@@ -51,6 +51,6 @@ else()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/Browser_Repl_Int/build/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
