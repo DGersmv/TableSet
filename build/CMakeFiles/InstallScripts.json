@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/cmake_install.cmake"
+		"C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

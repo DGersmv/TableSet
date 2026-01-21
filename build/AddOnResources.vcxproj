@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
@@ -18,7 +18,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CDC031DC-BA10-329F-86C4-4A8289E458A3}</ProjectGuid>
+    <ProjectGuid>{8AF27BD5-6AA3-3A51-8EBF-D421FBCFD253}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
@@ -29,17 +29,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -85,14 +85,14 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\CMakeFiles\6cef6f9ce1682f886f63a6d4be0d497c\AddOnResources.stamp.rule">
+    <CustomBuild Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\CMakeFiles\c3a93b294aab85cb7bb91c5f07999d41\AddOnResources.stamp.rule">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compiling resources...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects"
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects"
 if %errorlevel% neq 0 goto :cmEnd
-C:\Python314\python.exe "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Support/Tools/CompileResources.py" INT "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/../.." "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/Src" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects/BrowserReplInt.res"
+python "C:/Program Files/Graphisoft/API Development Kit 27.6003/Support/Tools/CompileResources.py" INT "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/../.." "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/Src" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects/TableSet.res"
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects/AddOnResources.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects/AddOnResources.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -100,16 +100,16 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX.win\Browser_Repl.rc2;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Browser_ReplFix.grc;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RINT\Browser_Repl.grc;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\CSV_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Close_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Contour_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Dims_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Land_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Layers_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Mesh_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Random_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\RotSurf_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Rotate_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Spline_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Support_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Table_28x28.svg;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\ResourceObjects\AddOnResources.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX.win\Browser_Repl.rc2;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Browser_ReplFix.grc;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RINT\Browser_Repl.grc;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Close_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Layers_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Support_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Table_28x28.svg;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\ResourceObjects\AddOnResources.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compiling resources...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects"
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects"
 if %errorlevel% neq 0 goto :cmEnd
-C:\Python314\python.exe "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Support/Tools/CompileResources.py" INT "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/../.." "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/Src" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects/BrowserReplInt.res"
+python "C:/Program Files/Graphisoft/API Development Kit 27.6003/Support/Tools/CompileResources.py" INT "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/../.." "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/Src" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects/TableSet.res"
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects/AddOnResources.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects/AddOnResources.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -117,16 +117,16 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX.win\Browser_Repl.rc2;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Browser_ReplFix.grc;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RINT\Browser_Repl.grc;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\CSV_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Close_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Contour_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Dims_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Land_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Layers_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Mesh_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Random_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\RotSurf_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Rotate_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Spline_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Support_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Table_28x28.svg;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\ResourceObjects\AddOnResources.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX.win\Browser_Repl.rc2;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Browser_ReplFix.grc;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RINT\Browser_Repl.grc;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Close_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Layers_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Support_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Table_28x28.svg;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\ResourceObjects\AddOnResources.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Compiling resources...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects"
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects"
 if %errorlevel% neq 0 goto :cmEnd
-C:\Python314\python.exe "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Support/Tools/CompileResources.py" INT "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/../.." "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/Src" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects" "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects/BrowserReplInt.res"
+python "C:/Program Files/Graphisoft/API Development Kit 27.6003/Support/Tools/CompileResources.py" INT "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/../.." "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/Src" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects" "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects/TableSet.res"
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Program Files/Graphisoft/API.Development.Kit.WIN.29.3100/Examples/BrowserReplInt/build/ResourceObjects/AddOnResources.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Program Files/Graphisoft/API Development Kit 27.6003/Examples/TableSet/build/ResourceObjects/AddOnResources.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -134,13 +134,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX.win\Browser_Repl.rc2;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Browser_ReplFix.grc;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RINT\Browser_Repl.grc;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\CSV_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Close_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Contour_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Dims_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Land_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Layers_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Mesh_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Random_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\RotSurf_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Rotate_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Spline_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Support_28x28.svg;C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Table_28x28.svg;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\ResourceObjects\AddOnResources.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX.win\Browser_Repl.rc2;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Browser_ReplFix.grc;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RINT\Browser_Repl.grc;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Close_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Layers_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Support_28x28.svg;C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Table_28x28.svg;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\ResourceObjects\AddOnResources.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\CMakeFiles\0ee5b53606a86180a9f4d38e465639ee\AddOnResources.rule">
+    <CustomBuild Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\CMakeFiles\d4372b43aac2794f7c056768fe304ca0\AddOnResources.rule">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 :cmEnd
@@ -149,8 +149,8 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\ResourceObjects\AddOnResources.stamp;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\CMakeFiles\AddOnResources</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\ResourceObjects\AddOnResources.stamp;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\CMakeFiles\AddOnResources</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></Message>
@@ -161,8 +161,8 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\ResourceObjects\AddOnResources.stamp;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\CMakeFiles\AddOnResources</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\ResourceObjects\AddOnResources.stamp;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\CMakeFiles\AddOnResources</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
       <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</VerifyInputsAndOutputsExist>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'"></Message>
@@ -173,46 +173,28 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\ResourceObjects\AddOnResources.stamp;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\CMakeFiles\AddOnResources</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\ResourceObjects\AddOnResources.stamp;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\CMakeFiles\AddOnResources</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
       <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</VerifyInputsAndOutputsExist>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX.win\Browser_Repl.rc2">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX.win\Browser_Repl.rc2">
     </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Browser_ReplFix.grc">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Browser_ReplFix.grc">
     </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RINT\Browser_Repl.grc">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RINT\Browser_Repl.grc">
     </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\CSV_28x28.svg">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Close_28x28.svg">
     </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Close_28x28.svg">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Layers_28x28.svg">
     </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Contour_28x28.svg">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Support_28x28.svg">
     </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Dims_28x28.svg">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\RFIX\Images\Table_28x28.svg">
     </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Land_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Layers_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Mesh_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Random_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\RotSurf_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Rotate_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Spline_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Support_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\RFIX\Images\Table_28x28.svg">
-    </None>
-    <None Include="C:\Program Files\Graphisoft\API.Development.Kit.WIN.29.3100\Examples\BrowserReplInt\build\CMakeFiles\AddOnResources">
+    <None Include="C:\Program Files\Graphisoft\API Development Kit 27.6003\Examples\TableSet\build\CMakeFiles\AddOnResources">
     </None>
   </ItemGroup>
   <ItemGroup />
